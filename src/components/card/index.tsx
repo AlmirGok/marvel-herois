@@ -1,5 +1,4 @@
 import { TouchableOpacity } from "react-native";
-import Shadow from "../../assets/shadow.svg";
 
 import * as Box from "./style";
 

@@ -1,6 +1,12 @@
 import * as Box from "./style";
+import { FlatList, Text, TextBase, TouchableOpacity, View } from "react-native";
 import { HeaderDetails } from "../../components/header";
 import { InfoDetails } from "../../components/infoDetails";
+import { Ability } from "../../components/ability";
+import { Films } from "../../components/films";
+import PercentageBar from "../../components/percentageBar";
+
+import { DATA } from "./data";
 
 export function Details({ navigation }) {
   return (
@@ -15,7 +21,7 @@ export function Details({ navigation }) {
           <Box.textH5>Peter Parker </Box.textH5>
           <Box.textNomeHero>Homem Aranha</Box.textNomeHero>
         </Box.contentTextTop>
-        <Box.inforDetails>
+        <Box.infoDetails>
           <InfoDetails
             age={"30 anos"}
             weight={"78kg"}
@@ -34,7 +40,31 @@ export function Details({ navigation }) {
             habilidades, Parker cria um traje e, como Homem Aranha, torna-se uma
             estrela de televisão.
           </Box.textDetailsInfo>
-        </Box.inforDetails>
+        </Box.infoDetails>
+        <Box.contentAbility>
+          <Box.textTitle>Habilidades</Box.textTitle>
+          <Ability />
+        </Box.contentAbility>
+
+        <Box.contentFilms>
+          <Box.textTitle>Filmes</Box.textTitle>
+
+          <FlatList
+            horizontal
+            data={DATA}
+            renderItem={({ item }) => (
+              <Films image={item.image} navigation={navigation} />
+            )}
+            keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        </Box.contentFilms>
+        <PercentageBar
+          height={20}
+          backgroundColor={"grey"}
+          completedColor={"blue"}
+          percentage={"6%"}
+        />
       </Box.containerScroll>
     </Box.container>
   );

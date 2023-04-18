@@ -52,7 +52,7 @@ export const textNomeHero = styled.Text`
   padding-left: 20px;
 `;
 
-export const inforDetails = styled.View`
+export const infoDetails = styled.View`
   padding: 10px 20px;
 `;
 
@@ -62,4 +62,22 @@ export const textDetailsInfo = styled.Text`
   line-height: 18px;
   padding-top: 20px;
   padding-bottom: 20px;
+`;
+
+export const contentAbility = styled.View`
+  flex: 1;
+  margin-bottom: 20px;
+`;
+
+export const textTitle = styled.Text`
+  font-size: ${fontSizes.titleCategory};
+  color: ${colors.white};
+  font-weight: ${fontWeights.bold};
+  margin-bottom: 20px;
+  padding: 0px 20px;
+`;
+
+export const contentFilms = styled.View`
+  flex: 1;
+  margin-bottom: 30px;
 `;
