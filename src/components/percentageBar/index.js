@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Text, View } from "react-native";
+import { fontSizes } from "../../theme";
 
 const PercentageBar = ({
-  navigation,
   percentage,
   height,
   backgroundColor,
   completedColor,
+  title,
 }) => {
   const [getPercentage, setPercentage] = useState(percentage);
   const [getheight, setHeight] = useState(height);
@@ -15,36 +16,82 @@ const PercentageBar = ({
   const [getCompletedColor, setCompletedColor] = useState(completedColor);
   return (
     <View>
-      <View style={{ justifyContent: "center" }}>
+      <View
+        style={{
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          height: 40,
+        }}
+      >
         <View
           style={{
-            width: "100%",
+            justifyContent: "center",
+            display: "flex",
+            paddingLeft: 20,
+            width: 110,
             height: getheight,
-            marginVertical: 10,
-            borderRadius: 5,
-            borderColor: getBackgroundColor,
-            borderWidth: 1,
-          }}
-        />
-        <View
-          style={{
-            width: getPercentage ? getPercentage : 0,
-            height: getheight,
-            marginVertical: 10,
-            borderRadius: 5,
-            backgroundColor: getCompletedColor,
-            position: "absolute",
-            bottom: 20,
-          }}
-        />
-        <View
-          style={{
-            width: getPercentage ? getPercentage : 0,
-            height: getheight,
-            bottom: 10,
           }}
         >
-          <Text style={{ textAlign: "right" }}>{getPercentage}</Text>
+          <Text
+            style={{
+              color: "#fff",
+              padding: 0,
+              fontSize: fontSizes.detailsInfo,
+            }}
+          >
+            {title}
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            display: "flex",
+            paddingRight: 20,
+            flex: 1,
+            position: "relative",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              height: getheight,
+              borderRadius: 5,
+              borderColor: getBackgroundColor,
+              opacity: 0.6,
+              borderWidth: 1,
+              position: "absolute",
+            }}
+          />
+          <View
+            style={{
+              width: getPercentage ? getPercentage : 0,
+              height: getheight,
+              borderRadius: 5,
+              backgroundColor: getCompletedColor,
+              position: "absolute",
+            }}
+          />
+          <View
+            style={{
+              width: getPercentage ? getPercentage : 0,
+              height: getheight,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                padding: 0,
+                fontSize: fontSizes.detailsInfo,
+              }}
+            >
+              {getPercentage}
+            </Text>
+          </View>
         </View>
       </View>
     </View>

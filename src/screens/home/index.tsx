@@ -24,7 +24,7 @@ export function Home({ navigation }) {
         <Box.contentList>
           <Box.contentTextCategory>
             <Box.textCategoryTitle>Heróis</Box.textCategoryTitle>
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9}>
               <Box.textCategoryViewAll>Ver tudo</Box.textCategoryViewAll>
             </TouchableOpacity>
           </Box.contentTextCategory>
@@ -47,7 +47,7 @@ export function Home({ navigation }) {
         <Box.contentList>
           <Box.contentTextCategory>
             <Box.textCategoryTitle>Vilões</Box.textCategoryTitle>
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9}>
               <Box.textCategoryViewAll>Ver tudo</Box.textCategoryViewAll>
             </TouchableOpacity>
           </Box.contentTextCategory>
@@ -70,7 +70,7 @@ export function Home({ navigation }) {
         <Box.contentList>
           <Box.contentTextCategory>
             <Box.textCategoryTitle>Anti-heróis</Box.textCategoryTitle>
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9}>
               <Box.textCategoryViewAll>Ver tudo</Box.textCategoryViewAll>
             </TouchableOpacity>
           </Box.contentTextCategory>

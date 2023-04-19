@@ -4,7 +4,10 @@ import * as Box from "./style";
 
 export function Card({ image, name, nameHero, navigation }) {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => navigation.navigate("Details")}
+    >
       <Box.Container>
         <Box.image source={{ uri: image }} alt="image" />
         <Box.imageShadow

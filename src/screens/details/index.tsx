@@ -2,9 +2,10 @@ import * as Box from "./style";
 import { FlatList, Text, TextBase, TouchableOpacity, View } from "react-native";
 import { HeaderDetails } from "../../components/header";
 import { InfoDetails } from "../../components/infoDetails";
-import { Ability } from "../../components/ability";
 import { Films } from "../../components/films";
 import PercentageBar from "../../components/percentageBar";
+
+import { colors, fontSizes, fontWeights } from "../../theme";
 
 import { DATA } from "./data";
 
@@ -43,7 +44,41 @@ export function Details({ navigation }) {
         </Box.infoDetails>
         <Box.contentAbility>
           <Box.textTitle>Habilidades</Box.textTitle>
-          <Ability />
+          <PercentageBar
+            height={15}
+            backgroundColor={colors.hero}
+            completedColor={colors.hero}
+            percentage={"30%"}
+            title={"Força"}
+          />
+          <PercentageBar
+            height={15}
+            backgroundColor={colors.villain}
+            completedColor={colors.villain}
+            percentage={"60%"}
+            title={"Inteligência"}
+          />
+          <PercentageBar
+            height={15}
+            backgroundColor={colors.antihero}
+            completedColor={colors.antihero}
+            percentage={"10%"}
+            title={"Agilidade"}
+          />
+          <PercentageBar
+            height={15}
+            backgroundColor={colors.alien}
+            completedColor={colors.alien}
+            percentage={"67%"}
+            title={"Resistência"}
+          />
+          <PercentageBar
+            height={15}
+            backgroundColor={colors.human}
+            completedColor={colors.human}
+            percentage={"90%"}
+            title={"Velocidade"}
+          />
         </Box.contentAbility>
 
         <Box.contentFilms>
@@ -59,12 +94,6 @@ export function Details({ navigation }) {
             showsHorizontalScrollIndicator={false}
           />
         </Box.contentFilms>
-        <PercentageBar
-          height={20}
-          backgroundColor={"grey"}
-          completedColor={"blue"}
-          percentage={"6%"}
-        />
       </Box.containerScroll>
     </Box.container>
   );

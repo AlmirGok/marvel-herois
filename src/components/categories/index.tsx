@@ -9,19 +9,19 @@ import Human from "../../assets/icons/human.svg";
 export function Categories() {
   return (
     <Box.Container>
-      <Box.ButtonHero>
+      <Box.ButtonHero activeOpacity={0.9}>
         <Hero width="26" height="26" fill="none" />
       </Box.ButtonHero>
-      <Box.ButtonVillain>
+      <Box.ButtonVillain activeOpacity={0.9}>
         <Villain width="26" height="26" fill="none" />
       </Box.ButtonVillain>
-      <Box.ButtonAntihero>
+      <Box.ButtonAntihero activeOpacity={0.9}>
         <Antihero width="26" height="26" fill="none" />
       </Box.ButtonAntihero>
-      <Box.ButtonAlien>
+      <Box.ButtonAlien activeOpacity={0.9}>
         <Alien width="26" height="26" fill="none" />
       </Box.ButtonAlien>
-      <Box.ButtonHuman>
+      <Box.ButtonHuman activeOpacity={0.9}>
         <Human width="26" height="26" fill="none" />
       </Box.ButtonHuman>
     </Box.Container>
