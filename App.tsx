@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import { Home } from "./src/screens/home";
-import { Details } from "./src/screens/details";
+import { DetailsCharacters } from "./src/screens/detailsCharacters";
+import { DetailsComics } from "./src/screens/detailsComics";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList, StatusBar, View } from "react-native";
@@ -26,7 +27,11 @@ export default function App() {
           initialRouteName="Home"
         >
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Details" component={Details} />
+          <Stack.Screen
+            name="DetailsCharacters"
+            component={DetailsCharacters}
+          />
+          <Stack.Screen name="DetailsComics" component={DetailsComics} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

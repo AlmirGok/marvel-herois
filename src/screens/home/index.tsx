@@ -1,14 +1,14 @@
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
-import * as Box from "./style";
+import * as S from "./style";
 import { HeaderHome } from "../../components/header";
 import { Categories } from "../../components/categories";
-import { Card } from "../../components/card";
+import { CardCharacters, CardComics } from "../../components/cards";
 
-import { DATA } from "./data";
 import { Component, useEffect, useState } from "react";
 
 export function Home({ navigation }) {
   const [movies, setMovies] = useState([]);
+  const [comics, setComics] = useState([]);
 
   const timeStamp = "1681411983";
   const apiKey = "c36ffe65080ff65bee37c51bb12b91cc";
@@ -16,53 +16,81 @@ export function Home({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://gateway.marvel.com/v1/public/characters?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=6`
+      `http://gateway.marvel.com/v1/public/characters?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=100`
     )
       .then((response) => {
-        console.log("==>", response.json);
         return response.json();
       })
       .then((jsonParsed) => {
-        console.log(jsonParsed.data);
+        console.log(" 🟩 Personagens", jsonParsed.data.results[0], "🟥");
         setMovies(jsonParsed.data.results);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+  useEffect(() => {
+    fetch(
+      `http://gateway.marvel.com/v1/public/comics?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=100`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonParsed) => {
+        console.log(
+          " 🟩 Histórias em quadrinhos",
+          jsonParsed.data.results[0].prices[0].price,
+          "🟥"
+        );
+        setComics(jsonParsed.data.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const renderItem = ({ item }) => {
-    console.log("=========>", item);
     return (
-      <Card
+      <CardCharacters
         name={item.name}
-        nameHero={""}
-        image={item.thumbnail.path}
+        image={`${item.thumbnail.path + "." + item.thumbnail.extension}`}
         id={item.id}
       />
     );
   };
+
+  const renderItemComics = ({ item }) => {
+    return (
+      <CardComics
+        title={item.title}
+        image={`${item.thumbnail.path + "." + item.thumbnail.extension}`}
+        id={item.id}
+        pageCount={item.pageCount}
+        value={item.prices[0].price}
+      />
+    );
+  };
+
   const keyExtractor = (item) => item.id.toString();
   return (
-    <Box.container>
+    <S.container>
       <HeaderHome />
-      <Box.containerScroll>
-        <Box.contentText>
-          <Box.textH5 className="text-center">
+      <S.containerScroll>
+        <S.contentText>
+          <S.textH5 className="text-center">
             Bem vindo ao Marvel Heroes
-          </Box.textH5>
-          <Box.textH1 className="text-center">
-            Escolha o seu personagem
-          </Box.textH1>
-        </Box.contentText>
+          </S.textH5>
+          <S.textH1 className="text-center">Escolha o seu personagem</S.textH1>
+        </S.contentText>
         <Categories />
 
-        <Box.contentList>
-          <Box.contentTextCategory>
-            <Box.textCategoryTitle>Heróis</Box.textCategoryTitle>
+        <S.contentList>
+          <S.contentTextCategory>
+            <S.textCategoryTitle>Heróis</S.textCategoryTitle>
             <TouchableOpacity activeOpacity={0.9}>
-              <Box.textCategoryViewAll>Ver tudo</Box.textCategoryViewAll>
+              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
             </TouchableOpacity>
-          </Box.contentTextCategory>
+          </S.contentTextCategory>
 
           <FlatList
             horizontal
@@ -71,15 +99,31 @@ export function Home({ navigation }) {
             keyExtractor={keyExtractor}
             showsHorizontalScrollIndicator={false}
           />
-        </Box.contentList>
+        </S.contentList>
 
-        <Box.contentList>
-          <Box.contentTextCategory>
-            <Box.textCategoryTitle>Vilões</Box.textCategoryTitle>
+        <S.contentList>
+          <S.contentTextCategory>
+            <S.textCategoryTitle>Histórias em quadrinhos</S.textCategoryTitle>
             <TouchableOpacity activeOpacity={0.9}>
-              <Box.textCategoryViewAll>Ver tudo</Box.textCategoryViewAll>
+              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
             </TouchableOpacity>
-          </Box.contentTextCategory>
+          </S.contentTextCategory>
+          <FlatList
+            horizontal
+            data={comics}
+            renderItem={renderItemComics}
+            keyExtractor={keyExtractor}
+            showsHorizontalScrollIndicator={false}
+          />
+        </S.contentList>
+
+        <S.contentList>
+          <S.contentTextCategory>
+            <S.textCategoryTitle>Anti-heróis</S.textCategoryTitle>
+            <TouchableOpacity activeOpacity={0.9}>
+              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+            </TouchableOpacity>
+          </S.contentTextCategory>
           {/* <FlatList
             horizontal
             data={DATA}
@@ -94,31 +138,8 @@ export function Home({ navigation }) {
             keyExtractor={(item) => item.id}
             showsHorizontalScrollIndicator={false}
           /> */}
-        </Box.contentList>
-
-        <Box.contentList>
-          <Box.contentTextCategory>
-            <Box.textCategoryTitle>Anti-heróis</Box.textCategoryTitle>
-            <TouchableOpacity activeOpacity={0.9}>
-              <Box.textCategoryViewAll>Ver tudo</Box.textCategoryViewAll>
-            </TouchableOpacity>
-          </Box.contentTextCategory>
-          {/* <FlatList
-            horizontal
-            data={DATA}
-            renderItem={({ item }) => (
-              <Card
-                name={item.name}
-                nameHero={item.nameHero}
-                image={item.image}
-                navigation={navigation}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            showsHorizontalScrollIndicator={false}
-          /> */}
-        </Box.contentList>
-      </Box.containerScroll>
-    </Box.container>
+        </S.contentList>
+      </S.containerScroll>
+    </S.container>
   );
 }

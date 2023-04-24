@@ -53,6 +53,13 @@ export const TextName = styled.Text`
   color: ${colors.white};
   padding-top: 5px;
 `;
+export const TextNameTitle = styled.Text`
+  width: 100%;
+  display: flex;
+  font-size: 16px;
+  color: ${colors.white};
+  padding-top: 5px;
+`;
 
 export const TextNameHero = styled.Text`
   width: 100%;
@@ -61,4 +68,25 @@ export const TextNameHero = styled.Text`
   color: ${colors.white};
   font-weight: 800;
   padding-top: 5px;
+`;
+
+export const contentInfo = styled.View`
+  font-size: 16px;
+  color: ${colors.white};
+  position: absolute;
+  background-color: ${colors.alien};
+  z-index: 10;
+  right: 0px;
+  padding: 5px 10px;
+  border-bottom-left-radius: 10px;
+`;
+export const Value = styled.Text`
+  font-size: 16px;
+  color: ${colors.white};
+`;
+export const PageCount = styled.Text`
+  font-size: 13px;
+  width: 100%;
+  padding: 5px 0px;
+  color: ${colors.white};
 `;

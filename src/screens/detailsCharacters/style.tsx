@@ -31,19 +31,11 @@ export const contentTextTop = styled.View`
   display: flex;
   margin-top: 65%;
 `;
-export const textH5 = styled.Text`
-  width: 100%;
-  display: flex;
-  font-size: ${fontSizes.detailsName};
-  color: ${colors.white};
-  padding-right: 20px;
-  padding-left: 20px;
-`;
 
 export const textNomeHero = styled.Text`
   width: 100%;
   display: flex;
-  width: 200px;
+  width: 100%;
   font-size: ${fontSizes.detailsNameHero};
   color: ${colors.white};
   font-weight: 800;

@@ -1,4 +1,4 @@
-import * as Box from "./style";
+import * as S from "./style";
 import Age from "../../assets/icons/age.svg";
 import Weight from "../../assets/icons/weight.svg";
 import Height from "../../assets/icons/height.svg";
@@ -6,23 +6,23 @@ import Earth from "../../assets/icons/earth.svg";
 
 export function InfoDetails({ age, weight, height, earth }) {
   return (
-    <Box.container>
-      <Box.buttonInfor>
+    <S.container>
+      <S.buttonInfor>
         <Age width="26" height="26" fill="none" />
-        <Box.textInfor>{age}</Box.textInfor>
-      </Box.buttonInfor>
-      <Box.buttonInfor>
+        <S.textInfor>{age}</S.textInfor>
+      </S.buttonInfor>
+      <S.buttonInfor>
         <Weight width="26" height="26" fill="none" />
-        <Box.textInfor>{weight}</Box.textInfor>
-      </Box.buttonInfor>
-      <Box.buttonInfor>
+        <S.textInfor>{weight}</S.textInfor>
+      </S.buttonInfor>
+      <S.buttonInfor>
         <Height width="26" height="26" fill="none" />
-        <Box.textInfor>{height}</Box.textInfor>
-      </Box.buttonInfor>
-      <Box.buttonInfor>
+        <S.textInfor>{height}</S.textInfor>
+      </S.buttonInfor>
+      <S.buttonInfor>
         <Earth width="26" height="26" fill="none" />
-        <Box.textInfor>{earth}</Box.textInfor>
-      </Box.buttonInfor>
-    </Box.container>
+        <S.textInfor>{earth}</S.textInfor>
+      </S.buttonInfor>
+    </S.container>
   );
 }
