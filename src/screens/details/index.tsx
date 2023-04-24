@@ -8,8 +8,35 @@ import PercentageBar from "../../components/percentageBar";
 import { colors, fontSizes, fontWeights } from "../../theme";
 
 import { DATA } from "./data";
+import { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
 
-export function Details({ navigation }) {
+export function Details() {
+  const route = useRoute();
+  const { id: charactersId } = route.params || {};
+
+  const [movie, setMovie] = useState({});
+
+  const timeStamp = "1681411983";
+  const apiKey = "c36ffe65080ff65bee37c51bb12b91cc";
+  const md5 = "9c19027d3adbe716fd172eb230c5a63e";
+
+  useEffect(() => {
+    fetch(
+      `http://gateway.marvel.com/v1/public/characters/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonParsed) => {
+        console.log("/////", jsonParsed.data);
+        setMovie(jsonParsed.data.results[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <Box.container>
       <HeaderDetails />
@@ -19,7 +46,7 @@ export function Details({ navigation }) {
       />
       <Box.containerScroll>
         <Box.contentTextTop>
-          <Box.textH5>Peter Parker </Box.textH5>
+          <Box.textH5>{movie?.name} </Box.textH5>
           <Box.textNomeHero>Homem Aranha</Box.textNomeHero>
         </Box.contentTextTop>
         <Box.infoDetails>
@@ -84,7 +111,7 @@ export function Details({ navigation }) {
         <Box.contentFilms>
           <Box.textTitle>Filmes</Box.textTitle>
 
-          <FlatList
+          {/* <FlatList
             horizontal
             data={DATA}
             renderItem={({ item }) => (
@@ -92,7 +119,7 @@ export function Details({ navigation }) {
             )}
             keyExtractor={(item) => item.id}
             showsHorizontalScrollIndicator={false}
-          />
+          /> */}
         </Box.contentFilms>
       </Box.containerScroll>
     </Box.container>

@@ -3,30 +3,14 @@ import { Home } from "./src/screens/home";
 import { Details } from "./src/screens/details";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "react-native";
+import { FlatList, StatusBar, View } from "react-native";
 import { StatusBarStyle } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 //Importando a API
 
-import api from "./src/services/api";
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filmes: [],
-    };
-  }
-  componentDidMount() {
-    const response = api.get("r-api/?api=filmes");
-  }
-}
-
 export default function App() {
-  const [filmes] = useState([]);
-
   return (
     <>
       <NavigationContainer>
