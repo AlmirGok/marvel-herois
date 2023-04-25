@@ -5,8 +5,9 @@ import { Films } from "../../components/films";
 
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
+import { colors } from "../../theme";
 
-export function DetailsEvents() {
+export function DetailsSeries() {
   const route = useRoute();
   const { id: charactersId } = route.params || {};
 
@@ -14,7 +15,7 @@ export function DetailsEvents() {
   const [movieImage, setMovieImage] = useState({});
   const [creators, setCreators] = useState([]);
   const [characters, setCharacters] = useState([]);
-  const [series, setSeries] = useState([]);
+  const [events, setEvents] = useState([]);
   const [comics, setComics] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -24,7 +25,7 @@ export function DetailsEvents() {
 
   useEffect(() => {
     fetch(
-      `http://gateway.marvel.com/v1/public/events/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
+      `http://gateway.marvel.com/v1/public/series/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
     )
       .then((response) => {
         return response.json();
@@ -34,15 +35,9 @@ export function DetailsEvents() {
         setMovieImage(jsonParsed.data.results[0].thumbnail);
         setCreators(jsonParsed.data.results[0].creators.items);
         setCharacters(jsonParsed.data.results[0].characters.items);
-        setSeries(jsonParsed.data.results[0].series.items);
+        setEvents(jsonParsed.data.results[0].events.items);
         setComics(jsonParsed.data.results[0].comics.items);
         setLoading(true);
-
-        console.log(
-          " 🟩🟩🟩🟩",
-          jsonParsed.data.results[0].characters.items,
-          "🟥"
-        );
       })
       .catch((error) => {
         console.log(error);
@@ -83,7 +78,7 @@ export function DetailsEvents() {
 
               <S.containerPage>
                 <S.TextNameComics>
-                  {movie?.start} ➡️ {movie?.end}
+                  {movie?.startYear} ➡️ {movie?.endYear}
                 </S.TextNameComics>
               </S.containerPage>
             </S.contentFilms>
@@ -118,11 +113,11 @@ export function DetailsEvents() {
               />
             </S.contentFilms>
             <S.contentFilms>
-              <S.textTitle>Series</S.textTitle>
+              <S.textTitle>Eventos</S.textTitle>
               <FlatList
                 horizontal
-                key={series}
-                data={series}
+                key={events}
+                data={events}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
               />
@@ -130,7 +125,7 @@ export function DetailsEvents() {
           </S.containerScroll>
         </S.container>
       ) : (
-        <ActivityIndicator size="large" color="rgb(255, 0, 64)" />
+        <ActivityIndicator size="large" color={colors.red} />
       )}
     </S.container>
   );

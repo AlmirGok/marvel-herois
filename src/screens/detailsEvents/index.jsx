@@ -1,27 +1,22 @@
 import * as S from "./style";
-import { ActivityIndicator, FlatList, Text } from "react-native";
+import { ActivityIndicator, FlatList } from "react-native";
 import { HeaderDetails } from "../../components/header";
-import { InfoDetails } from "../../components/infoDetails";
 import { Films } from "../../components/films";
-import PercentageBar from "../../components/percentageBar";
-import Loader from "react-native-mask-loader";
 
-import { colors } from "../../theme";
-
-import { DATA } from "./data";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
+import { colors } from "../../theme";
 
-export function DetailsCharacters() {
+export function DetailsEvents() {
   const route = useRoute();
   const { id: charactersId } = route.params || {};
 
-  const [characters, setCharacters] = useState({});
+  const [movie, setMovie] = useState({});
   const [movieImage, setMovieImage] = useState({});
-  const [comics, setComics] = useState([]);
+  const [creators, setCreators] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const [series, setSeries] = useState([]);
-  const [stories, setStories] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [comics, setComics] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const timeStamp = "1681411983";
@@ -30,20 +25,25 @@ export function DetailsCharacters() {
 
   useEffect(() => {
     fetch(
-      `http://gateway.marvel.com/v1/public/characters/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
+      `http://gateway.marvel.com/v1/public/events/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
     )
       .then((response) => {
         return response.json();
       })
       .then((jsonParsed) => {
-        console.log("🟩", jsonParsed.data.results[0].comics.items, "🟥");
-        setCharacters(jsonParsed.data.results[0]);
+        setMovie(jsonParsed.data.results[0]);
         setMovieImage(jsonParsed.data.results[0].thumbnail);
-        setComics(jsonParsed.data.results[0].comics.items);
+        setCreators(jsonParsed.data.results[0].creators.items);
+        setCharacters(jsonParsed.data.results[0].characters.items);
         setSeries(jsonParsed.data.results[0].series.items);
-        setStories(jsonParsed.data.results[0].stories.items);
-        setEvents(jsonParsed.data.results[0].events.items);
+        setComics(jsonParsed.data.results[0].comics.items);
         setLoading(true);
+
+        console.log(
+          " 🟩🟩🟩🟩",
+          jsonParsed.data.results[0].characters.items,
+          "🟥"
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -52,6 +52,9 @@ export function DetailsCharacters() {
 
   const renderItem = ({ item }) => {
     return <Films name={item.name} />;
+  };
+  const renderItemPrices = ({ item }) => {
+    return <Films name={`$ ${item.price}`} />;
   };
   const keyExtractor = (item) => item.id;
 
@@ -70,20 +73,49 @@ export function DetailsCharacters() {
           />
           <S.containerScroll>
             <S.contentTextTop>
-              <S.textNomeHero>{characters?.name} </S.textNomeHero>
+              <S.textNomeHero>{movie?.title}</S.textNomeHero>
             </S.contentTextTop>
             <S.infoDetails>
-              <S.textDetailsInfo>{characters?.description}</S.textDetailsInfo>
+              <S.textDetailsInfo>{movie?.description}</S.textDetailsInfo>
             </S.infoDetails>
 
             <S.contentFilms>
-              <S.textTitle>Quadrinhos</S.textTitle>
+              <S.textTitle>Início ➡️ Fim</S.textTitle>
+
+              <S.containerPage>
+                <S.TextNameComics>
+                  {movie?.start} ➡️ {movie?.end}
+                </S.TextNameComics>
+              </S.containerPage>
+            </S.contentFilms>
+            <S.contentFilms>
+              <S.textTitle>Criadores</S.textTitle>
+              <FlatList
+                horizontal
+                key={creators}
+                data={creators}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+              />
+            </S.contentFilms>
+            <S.contentFilms>
+              <S.textTitle>Personagens</S.textTitle>
+              <FlatList
+                horizontal
+                key={characters}
+                data={characters}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+              />
+            </S.contentFilms>
+            <S.contentFilms>
+              <S.textTitle>Histórias em quadrinhos</S.textTitle>
               <FlatList
                 horizontal
                 key={comics}
                 data={comics}
                 renderItem={renderItem}
-                showsHorizontalScrollIndicator={false}
+                keyExtractor={keyExtractor}
               />
             </S.contentFilms>
             <S.contentFilms>
@@ -93,33 +125,13 @@ export function DetailsCharacters() {
                 key={series}
                 data={series}
                 renderItem={renderItem}
-                showsHorizontalScrollIndicator={false}
-              />
-            </S.contentFilms>
-            <S.contentFilms>
-              <S.textTitle>Histórias</S.textTitle>
-              <FlatList
-                horizontal
-                key={stories}
-                data={stories}
-                renderItem={renderItem}
-                showsHorizontalScrollIndicator={false}
-              />
-            </S.contentFilms>
-            <S.contentFilms>
-              <S.textTitle>Eventos</S.textTitle>
-              <FlatList
-                horizontal
-                key={events}
-                data={events}
-                renderItem={renderItem}
-                showsHorizontalScrollIndicator={false}
+                keyExtractor={keyExtractor}
               />
             </S.contentFilms>
           </S.containerScroll>
         </S.container>
       ) : (
-        <ActivityIndicator size="large" color="rgb(255, 0, 64)" />
+        <ActivityIndicator size="large" color={colors.red} />
       )}
     </S.container>
   );

@@ -1,24 +1,24 @@
 import * as S from "./style";
-import { ActivityIndicator, FlatList } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
 import { HeaderDetails } from "../../components/header";
 import { InfoDetails } from "../../components/infoDetails";
 import { Films } from "../../components/films";
 import PercentageBar from "../../components/percentageBar";
+import Loader from "react-native-mask-loader";
 
 import { colors } from "../../theme";
 
-import { DATA } from "./data";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 
-export function DetailsComics() {
+export function DetailsCharacters() {
   const route = useRoute();
   const { id: charactersId } = route.params || {};
 
-  const [movie, setMovie] = useState({});
+  const [characters, setCharacters] = useState({});
   const [movieImage, setMovieImage] = useState({});
-  const [creators, setCreators] = useState([]);
-  const [prices, setPrices] = useState([]);
+  const [comics, setComics] = useState([]);
+  const [series, setSeries] = useState([]);
   const [stories, setStories] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -29,17 +29,17 @@ export function DetailsComics() {
 
   useEffect(() => {
     fetch(
-      `http://gateway.marvel.com/v1/public/comics/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
+      `http://gateway.marvel.com/v1/public/characters/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
     )
       .then((response) => {
         return response.json();
       })
       .then((jsonParsed) => {
-        console.log(" 🟩🟩🟩🟩", jsonParsed.data.results[0].pageCount, "🟥");
-        setMovie(jsonParsed.data.results[0]);
+        console.log("🟩", jsonParsed.data.results[0].comics.items, "🟥");
+        setCharacters(jsonParsed.data.results[0]);
         setMovieImage(jsonParsed.data.results[0].thumbnail);
-        setCreators(jsonParsed.data.results[0].creators.items);
-        setPrices(jsonParsed.data.results[0].prices);
+        setComics(jsonParsed.data.results[0].comics.items);
+        setSeries(jsonParsed.data.results[0].series.items);
         setStories(jsonParsed.data.results[0].stories.items);
         setEvents(jsonParsed.data.results[0].events.items);
         setLoading(true);
@@ -51,9 +51,6 @@ export function DetailsComics() {
 
   const renderItem = ({ item }) => {
     return <Films name={item.name} />;
-  };
-  const renderItemPrices = ({ item }) => {
-    return <Films name={`$ ${item.price}`} />;
   };
   const keyExtractor = (item) => item.id;
 
@@ -72,37 +69,30 @@ export function DetailsComics() {
           />
           <S.containerScroll>
             <S.contentTextTop>
-              <S.textNomeHero>{movie?.title}</S.textNomeHero>
+              <S.textNomeHero>{characters?.name} </S.textNomeHero>
             </S.contentTextTop>
             <S.infoDetails>
-              <S.textDetailsInfo>{movie?.description}</S.textDetailsInfo>
+              <S.textDetailsInfo>{characters?.description}</S.textDetailsInfo>
             </S.infoDetails>
 
             <S.contentFilms>
-              <S.textTitle>Contagem de páginas</S.textTitle>
-
-              <S.containerPage>
-                <S.TextNameComics>{movie?.pageCount}</S.TextNameComics>
-              </S.containerPage>
-            </S.contentFilms>
-            <S.contentFilms>
-              <S.textTitle>Criadores</S.textTitle>
+              <S.textTitle>Quadrinhos</S.textTitle>
               <FlatList
                 horizontal
-                key={creators}
-                data={creators}
+                key={comics}
+                data={comics}
                 renderItem={renderItem}
-                keyExtractor={keyExtractor}
+                showsHorizontalScrollIndicator={false}
               />
             </S.contentFilms>
             <S.contentFilms>
-              <S.textTitle>Valores</S.textTitle>
+              <S.textTitle>Series</S.textTitle>
               <FlatList
                 horizontal
-                key={prices}
-                data={prices}
-                renderItem={renderItemPrices}
-                keyExtractor={keyExtractor}
+                key={series}
+                data={series}
+                renderItem={renderItem}
+                showsHorizontalScrollIndicator={false}
               />
             </S.contentFilms>
             <S.contentFilms>
@@ -112,13 +102,23 @@ export function DetailsComics() {
                 key={stories}
                 data={stories}
                 renderItem={renderItem}
-                keyExtractor={keyExtractor}
+                showsHorizontalScrollIndicator={false}
+              />
+            </S.contentFilms>
+            <S.contentFilms>
+              <S.textTitle>Eventos</S.textTitle>
+              <FlatList
+                horizontal
+                key={events}
+                data={events}
+                renderItem={renderItem}
+                showsHorizontalScrollIndicator={false}
               />
             </S.contentFilms>
           </S.containerScroll>
         </S.container>
       ) : (
-        <ActivityIndicator size="large" color="rgb(255, 0, 64)" />
+        <ActivityIndicator size="large" color={colors.red} />
       )}
     </S.container>
   );

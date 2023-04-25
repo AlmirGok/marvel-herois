@@ -1,21 +1,25 @@
 import * as S from "./style";
 import { ActivityIndicator, FlatList } from "react-native";
 import { HeaderDetails } from "../../components/header";
+import { InfoDetails } from "../../components/infoDetails";
 import { Films } from "../../components/films";
+import PercentageBar from "../../components/percentageBar";
+
+import { colors } from "../../theme";
 
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 
-export function DetailsSeries() {
+export function DetailsComics() {
   const route = useRoute();
   const { id: charactersId } = route.params || {};
 
   const [movie, setMovie] = useState({});
   const [movieImage, setMovieImage] = useState({});
   const [creators, setCreators] = useState([]);
-  const [characters, setCharacters] = useState([]);
+  const [prices, setPrices] = useState([]);
+  const [stories, setStories] = useState([]);
   const [events, setEvents] = useState([]);
-  const [comics, setComics] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const timeStamp = "1681411983";
@@ -24,18 +28,19 @@ export function DetailsSeries() {
 
   useEffect(() => {
     fetch(
-      `http://gateway.marvel.com/v1/public/series/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
+      `http://gateway.marvel.com/v1/public/comics/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
     )
       .then((response) => {
         return response.json();
       })
       .then((jsonParsed) => {
+        console.log(" 🟩🟩🟩🟩", jsonParsed.data.results[0].pageCount, "🟥");
         setMovie(jsonParsed.data.results[0]);
         setMovieImage(jsonParsed.data.results[0].thumbnail);
         setCreators(jsonParsed.data.results[0].creators.items);
-        setCharacters(jsonParsed.data.results[0].characters.items);
+        setPrices(jsonParsed.data.results[0].prices);
+        setStories(jsonParsed.data.results[0].stories.items);
         setEvents(jsonParsed.data.results[0].events.items);
-        setComics(jsonParsed.data.results[0].comics.items);
         setLoading(true);
       })
       .catch((error) => {
@@ -73,12 +78,10 @@ export function DetailsSeries() {
             </S.infoDetails>
 
             <S.contentFilms>
-              <S.textTitle>Início ➡️ Fim</S.textTitle>
+              <S.textTitle>Contagem de páginas</S.textTitle>
 
               <S.containerPage>
-                <S.TextNameComics>
-                  {movie?.startYear} ➡️ {movie?.endYear}
-                </S.TextNameComics>
+                <S.TextNameComics>{movie?.pageCount}</S.TextNameComics>
               </S.containerPage>
             </S.contentFilms>
             <S.contentFilms>
@@ -92,31 +95,21 @@ export function DetailsSeries() {
               />
             </S.contentFilms>
             <S.contentFilms>
-              <S.textTitle>Personagens</S.textTitle>
+              <S.textTitle>Valores</S.textTitle>
               <FlatList
                 horizontal
-                key={characters}
-                data={characters}
-                renderItem={renderItem}
+                key={prices}
+                data={prices}
+                renderItem={renderItemPrices}
                 keyExtractor={keyExtractor}
               />
             </S.contentFilms>
             <S.contentFilms>
-              <S.textTitle>Histórias em quadrinhos</S.textTitle>
+              <S.textTitle>Histórias</S.textTitle>
               <FlatList
                 horizontal
-                key={comics}
-                data={comics}
-                renderItem={renderItem}
-                keyExtractor={keyExtractor}
-              />
-            </S.contentFilms>
-            <S.contentFilms>
-              <S.textTitle>Eventos</S.textTitle>
-              <FlatList
-                horizontal
-                key={events}
-                data={events}
+                key={stories}
+                data={stories}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
               />
@@ -124,7 +117,7 @@ export function DetailsSeries() {
           </S.containerScroll>
         </S.container>
       ) : (
-        <ActivityIndicator size="large" color="rgb(255, 0, 64)" />
+        <ActivityIndicator size="large" color={colors.red} />
       )}
     </S.container>
   );
