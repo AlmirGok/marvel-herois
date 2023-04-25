@@ -76,7 +76,7 @@ export const contentFilms = styled.View`
 export const containerPage = styled.View`
   flex: 1;
   height: auto;
-  width: 50px;
+  width: 130px;
   overflow: hidden;
   margin-left: 10px;
   margin-right: 10px;

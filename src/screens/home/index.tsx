@@ -2,13 +2,21 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import * as S from "./style";
 import { HeaderHome } from "../../components/header";
 import { Categories } from "../../components/categories";
-import { CardCharacters, CardComics } from "../../components/cards";
+import {
+  CardCharacters,
+  CardComics,
+  CardEvents,
+  CardSeries,
+} from "../../components/cards";
 
 import { Component, useEffect, useState } from "react";
 
 export function Home({ navigation }) {
-  const [movies, setMovies] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const [comics, setComics] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [series, setSeries] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const timeStamp = "1681411983";
   const apiKey = "c36ffe65080ff65bee37c51bb12b91cc";
@@ -16,40 +24,20 @@ export function Home({ navigation }) {
 
   useEffect(() => {
     fetch(
-      `http://gateway.marvel.com/v1/public/characters?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=100`
+      `http://gateway.marvel.com/v1/public/characters?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
     )
       .then((response) => {
         return response.json();
       })
       .then((jsonParsed) => {
-        console.log(" 🟩 Personagens", jsonParsed.data.results[0], "🟥");
-        setMovies(jsonParsed.data.results);
+        setCharacters(jsonParsed.data.results);
+        setLoading(true);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
-  useEffect(() => {
-    fetch(
-      `http://gateway.marvel.com/v1/public/comics?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=100`
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((jsonParsed) => {
-        console.log(
-          " 🟩 Histórias em quadrinhos",
-          jsonParsed.data.results[0].prices[0].price,
-          "🟥"
-        );
-        setComics(jsonParsed.data.results);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-  const renderItem = ({ item }) => {
+  const renderItemCharacters = ({ item }) => {
     return (
       <CardCharacters
         name={item.name}
@@ -59,6 +47,21 @@ export function Home({ navigation }) {
     );
   };
 
+  useEffect(() => {
+    fetch(
+      `http://gateway.marvel.com/v1/public/comics?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonParsed) => {
+        setComics(jsonParsed.data.results);
+        setLoading(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const renderItemComics = ({ item }) => {
     return (
       <CardComics
@@ -71,10 +74,71 @@ export function Home({ navigation }) {
     );
   };
 
+  useEffect(() => {
+    fetch(
+      `http://gateway.marvel.com/v1/public/events?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonParsed) => {
+        console.log(
+          " 🟩 Data de inicio ",
+          jsonParsed.data.results[0].start,
+          "🟥"
+        );
+        setEvents(jsonParsed.data.results);
+        setLoading(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  const renderItemEventos = ({ item }) => {
+    return (
+      <CardEvents
+        title={item.title}
+        image={`${item.thumbnail.path + "." + item.thumbnail.extension}`}
+        id={item.id}
+      />
+    );
+  };
+
+  useEffect(() => {
+    fetch(
+      `http://gateway.marvel.com/v1/public/series?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonParsed) => {
+        console.log(
+          " 🟩 Data de inicio ",
+          jsonParsed.data.results[0].title,
+          "🟥"
+        );
+        setSeries(jsonParsed.data.results);
+        setLoading(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  const renderItemSeries = ({ item }) => {
+    return (
+      <CardSeries
+        title={item.title}
+        image={`${item.thumbnail.path + "." + item.thumbnail.extension}`}
+        id={item.id}
+      />
+    );
+  };
+
   const keyExtractor = (item) => item.id.toString();
   return (
     <S.container>
       <HeaderHome />
+
       <S.containerScroll>
         <S.contentText>
           <S.textH5 className="text-center">
@@ -84,60 +148,73 @@ export function Home({ navigation }) {
         </S.contentText>
         <Categories />
 
+        {/* <S.contentList>
+            <S.contentTextCategory>
+              <S.textCategoryTitle>Heróis</S.textCategoryTitle>
+              <TouchableOpacity activeOpacity={0.9}>
+                <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+              </TouchableOpacity>
+            </S.contentTextCategory>
+
+            <FlatList
+              horizontal
+              data={characters}
+              renderItem={renderItemCharacters}
+              keyExtractor={keyExtractor}
+              showsHorizontalScrollIndicator={false}
+            />
+          </S.contentList>
+
+          <S.contentList>
+            <S.contentTextCategory>
+              <S.textCategoryTitle>Histórias em quadrinhos</S.textCategoryTitle>
+              <TouchableOpacity activeOpacity={0.9}>
+                <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+              </TouchableOpacity>
+            </S.contentTextCategory>
+            <FlatList
+              horizontal
+              data={comics}
+              renderItem={renderItemComics}
+              keyExtractor={keyExtractor}
+              showsHorizontalScrollIndicator={false}
+            />
+          </S.contentList>
+
+          <S.contentList>
+            <S.contentTextCategory>
+              <S.textCategoryTitle>Eventos</S.textCategoryTitle>
+              <TouchableOpacity activeOpacity={0.9}>
+                <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+              </TouchableOpacity>
+            </S.contentTextCategory>
+            <FlatList
+              horizontal
+              data={events}
+              renderItem={renderItemEventos}
+              keyExtractor={keyExtractor}
+              showsHorizontalScrollIndicator={false}
+            />
+          </S.contentList> */}
+
         <S.contentList>
           <S.contentTextCategory>
-            <S.textCategoryTitle>Heróis</S.textCategoryTitle>
+            <S.textCategoryTitle>Series</S.textCategoryTitle>
             <TouchableOpacity activeOpacity={0.9}>
               <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
             </TouchableOpacity>
           </S.contentTextCategory>
-
-          <FlatList
-            horizontal
-            data={movies}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            showsHorizontalScrollIndicator={false}
-          />
-        </S.contentList>
-
-        <S.contentList>
-          <S.contentTextCategory>
-            <S.textCategoryTitle>Histórias em quadrinhos</S.textCategoryTitle>
-            <TouchableOpacity activeOpacity={0.9}>
-              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
-            </TouchableOpacity>
-          </S.contentTextCategory>
-          <FlatList
-            horizontal
-            data={comics}
-            renderItem={renderItemComics}
-            keyExtractor={keyExtractor}
-            showsHorizontalScrollIndicator={false}
-          />
-        </S.contentList>
-
-        <S.contentList>
-          <S.contentTextCategory>
-            <S.textCategoryTitle>Anti-heróis</S.textCategoryTitle>
-            <TouchableOpacity activeOpacity={0.9}>
-              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
-            </TouchableOpacity>
-          </S.contentTextCategory>
-          {/* <FlatList
-            horizontal
-            data={DATA}
-            renderItem={({ item }) => (
-              <Card
-                name={item.name}
-                nameHero={item.nameHero}
-                image={item.image}
-                navigation={navigation}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            showsHorizontalScrollIndicator={false}
-          /> */}
+          {loading ? (
+            <FlatList
+              horizontal
+              data={series}
+              renderItem={renderItemSeries}
+              keyExtractor={keyExtractor}
+              showsHorizontalScrollIndicator={false}
+            />
+          ) : (
+            <S.Loading></S.Loading>
+          )}
         </S.contentList>
       </S.containerScroll>
     </S.container>

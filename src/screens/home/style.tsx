@@ -64,3 +64,9 @@ export const textCategoryViewAll = styled.Text`
   color: ${colors.grey};
   font-size: ${fontSizes.homeSubtitle};
 `;
+
+export const Loading = styled.View`
+  background-color: red;
+  width: 40px;
+  height: 40px;
+`;

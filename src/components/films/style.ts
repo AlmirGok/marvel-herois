@@ -5,7 +5,6 @@ export const container = styled.View`
   flex: 1;
   background-color: red;
   height: auto;
-  width: auto;
   overflow: hidden;
   margin-left: 10px;
   margin-right: 10px;

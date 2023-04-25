@@ -62,3 +62,57 @@ export function CardComics({ image, title, id, pageCount, value }) {
     </TouchableOpacity>
   );
 }
+
+export function CardEvents({ image, title, id }) {
+  const navigation = useNavigation();
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => navigation.navigate("DetailsEvents", { id })}
+    >
+      <S.Container>
+        <S.image
+          source={{
+            uri: image,
+          }}
+          alt="image"
+        />
+        <S.imageShadow
+          source={require("../../assets/shadow.png")}
+          alt="image"
+        />
+        <S.contentText>
+          <S.TextNameTitle>{title}</S.TextNameTitle>
+        </S.contentText>
+      </S.Container>
+    </TouchableOpacity>
+  );
+}
+
+export function CardSeries({ image, title, id }) {
+  const navigation = useNavigation();
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => navigation.navigate("DetailsSeries", { id })}
+    >
+      <S.Container>
+        <S.image
+          source={{
+            uri: image,
+          }}
+          alt="image"
+        />
+        <S.imageShadow
+          source={require("../../assets/shadow.png")}
+          alt="image"
+        />
+        <S.contentText>
+          <S.TextNameTitle>{title}</S.TextNameTitle>
+        </S.contentText>
+      </S.Container>
+    </TouchableOpacity>
+  );
+}

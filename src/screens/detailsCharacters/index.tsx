@@ -28,7 +28,7 @@ export function DetailsCharacters() {
 
   useEffect(() => {
     fetch(
-      `http://gateway.marvel.com/v1/public/characters/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}`
+      `http://gateway.marvel.com/v1/public/characters/${charactersId}?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
     )
       .then((response) => {
         return response.json();
@@ -68,52 +68,8 @@ export function DetailsCharacters() {
           <S.textNomeHero>{characters?.name} </S.textNomeHero>
         </S.contentTextTop>
         <S.infoDetails>
-          <InfoDetails
-            age={"30 anos"}
-            weight={"78kg"}
-            height={"1.80m"}
-            earth={"Terra 616"}
-          />
           <S.textDetailsInfo>{characters?.description}</S.textDetailsInfo>
         </S.infoDetails>
-        <S.contentAbility>
-          <S.textTitle>Habilidades</S.textTitle>
-          <PercentageBar
-            height={15}
-            backgroundColor={colors.hero}
-            completedColor={colors.hero}
-            percentage={"30%"}
-            title={"Força"}
-          />
-          <PercentageBar
-            height={15}
-            backgroundColor={colors.villain}
-            completedColor={colors.villain}
-            percentage={"60%"}
-            title={"Inteligência"}
-          />
-          <PercentageBar
-            height={15}
-            backgroundColor={colors.antihero}
-            completedColor={colors.antihero}
-            percentage={"10%"}
-            title={"Agilidade"}
-          />
-          <PercentageBar
-            height={15}
-            backgroundColor={colors.alien}
-            completedColor={colors.alien}
-            percentage={"67%"}
-            title={"Resistência"}
-          />
-          <PercentageBar
-            height={15}
-            backgroundColor={colors.human}
-            completedColor={colors.human}
-            percentage={"90%"}
-            title={"Velocidade"}
-          />
-        </S.contentAbility>
 
         <S.contentFilms>
           <S.textTitle>Quadrinhos</S.textTitle>
