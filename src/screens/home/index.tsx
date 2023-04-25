@@ -8,15 +8,20 @@ import {
   CardEvents,
   CardSeries,
 } from "../../components/cards";
+import { Skeleton } from "@rneui/themed";
 
-import { Component, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 
 export function Home({ navigation }) {
   const [characters, setCharacters] = useState([]);
   const [comics, setComics] = useState([]);
   const [events, setEvents] = useState([]);
   const [series, setSeries] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingCharacters, setLoadingCharacters] = useState(false);
+  const [loadingComics, setLoadingComics] = useState(false);
+  const [loadingEvents, setLoadingEvents] = useState(false);
+  const [loadingSeries, setLoadingSeries] = useState(false);
 
   const timeStamp = "1681411983";
   const apiKey = "c36ffe65080ff65bee37c51bb12b91cc";
@@ -30,12 +35,12 @@ export function Home({ navigation }) {
         return response.json();
       })
       .then((jsonParsed) => {
+        setLoadingCharacters(true);
         setCharacters(jsonParsed.data.results);
-        setLoading(true);
       })
       .catch((error) => {
         console.log(error);
-      });
+      }).finally;
   }, []);
   const renderItemCharacters = ({ item }) => {
     return (
@@ -55,12 +60,12 @@ export function Home({ navigation }) {
         return response.json();
       })
       .then((jsonParsed) => {
+        setLoadingComics(true);
         setComics(jsonParsed.data.results);
-        setLoading(true);
       })
       .catch((error) => {
         console.log(error);
-      });
+      }).finally;
   }, []);
   const renderItemComics = ({ item }) => {
     return (
@@ -82,17 +87,13 @@ export function Home({ navigation }) {
         return response.json();
       })
       .then((jsonParsed) => {
-        console.log(
-          " 🟩 Data de inicio ",
-          jsonParsed.data.results[0].start,
-          "🟥"
-        );
+        setLoadingEvents(true);
+
         setEvents(jsonParsed.data.results);
-        setLoading(true);
       })
       .catch((error) => {
         console.log(error);
-      });
+      }).finally;
   }, []);
   const renderItemEventos = ({ item }) => {
     return (
@@ -112,18 +113,14 @@ export function Home({ navigation }) {
         return response.json();
       })
       .then((jsonParsed) => {
-        console.log(
-          " 🟩 Data de inicio ",
-          jsonParsed.data.results[0].title,
-          "🟥"
-        );
         setSeries(jsonParsed.data.results);
-        setLoading(true);
+        setLoadingSeries(true);
       })
       .catch((error) => {
         console.log(error);
-      });
+      }).finally;
   }, []);
+
   const renderItemSeries = ({ item }) => {
     return (
       <CardSeries
@@ -133,6 +130,35 @@ export function Home({ navigation }) {
       />
     );
   };
+
+  const SkeletonLoading = () => (
+    <S.Loading>
+      <S.Skeleton>
+        <Skeleton
+          LinearGradientComponent={LinearGradient}
+          animation="wave"
+          width={140}
+          height={230}
+        />
+      </S.Skeleton>
+      <S.Skeleton>
+        <Skeleton
+          LinearGradientComponent={LinearGradient}
+          animation="wave"
+          width={140}
+          height={230}
+        />
+      </S.Skeleton>
+      <S.Skeleton>
+        <Skeleton
+          LinearGradientComponent={LinearGradient}
+          animation="wave"
+          width={140}
+          height={230}
+        />
+      </S.Skeleton>
+    </S.Loading>
+  );
 
   const keyExtractor = (item) => item.id.toString();
   return (
@@ -148,54 +174,74 @@ export function Home({ navigation }) {
         </S.contentText>
         <Categories />
 
-        {/* <S.contentList>
-            <S.contentTextCategory>
-              <S.textCategoryTitle>Heróis</S.textCategoryTitle>
-              <TouchableOpacity activeOpacity={0.9}>
-                <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
-              </TouchableOpacity>
-            </S.contentTextCategory>
-
+        <S.contentList>
+          <S.contentTextCategory>
+            <S.textCategoryTitle>Heróis</S.textCategoryTitle>
+            <TouchableOpacity activeOpacity={0.9}>
+              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+            </TouchableOpacity>
+          </S.contentTextCategory>
+          {loadingCharacters ? (
             <FlatList
+              style={{
+                height: 230,
+              }}
               horizontal
               data={characters}
               renderItem={renderItemCharacters}
               keyExtractor={keyExtractor}
               showsHorizontalScrollIndicator={false}
             />
-          </S.contentList>
+          ) : (
+            <SkeletonLoading />
+          )}
+        </S.contentList>
 
-          <S.contentList>
-            <S.contentTextCategory>
-              <S.textCategoryTitle>Histórias em quadrinhos</S.textCategoryTitle>
-              <TouchableOpacity activeOpacity={0.9}>
-                <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
-              </TouchableOpacity>
-            </S.contentTextCategory>
+        <S.contentList>
+          <S.contentTextCategory>
+            <S.textCategoryTitle>Histórias em quadrinhos</S.textCategoryTitle>
+            <TouchableOpacity activeOpacity={0.9}>
+              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+            </TouchableOpacity>
+          </S.contentTextCategory>
+          {loadingComics ? (
             <FlatList
+              style={{
+                height: 230,
+              }}
               horizontal
               data={comics}
               renderItem={renderItemComics}
               keyExtractor={keyExtractor}
               showsHorizontalScrollIndicator={false}
             />
-          </S.contentList>
+          ) : (
+            <SkeletonLoading />
+          )}
+        </S.contentList>
 
-          <S.contentList>
-            <S.contentTextCategory>
-              <S.textCategoryTitle>Eventos</S.textCategoryTitle>
-              <TouchableOpacity activeOpacity={0.9}>
-                <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
-              </TouchableOpacity>
-            </S.contentTextCategory>
+        <S.contentList>
+          <S.contentTextCategory>
+            <S.textCategoryTitle>Eventos</S.textCategoryTitle>
+            <TouchableOpacity activeOpacity={0.9}>
+              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+            </TouchableOpacity>
+          </S.contentTextCategory>
+          {loadingEvents ? (
             <FlatList
+              style={{
+                height: 230,
+              }}
               horizontal
               data={events}
               renderItem={renderItemEventos}
               keyExtractor={keyExtractor}
               showsHorizontalScrollIndicator={false}
             />
-          </S.contentList> */}
+          ) : (
+            <SkeletonLoading />
+          )}
+        </S.contentList>
 
         <S.contentList>
           <S.contentTextCategory>
@@ -204,8 +250,11 @@ export function Home({ navigation }) {
               <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
             </TouchableOpacity>
           </S.contentTextCategory>
-          {loading ? (
+          {loadingSeries ? (
             <FlatList
+              style={{
+                height: 230,
+              }}
               horizontal
               data={series}
               renderItem={renderItemSeries}
@@ -213,7 +262,7 @@ export function Home({ navigation }) {
               showsHorizontalScrollIndicator={false}
             />
           ) : (
-            <S.Loading></S.Loading>
+            <SkeletonLoading />
           )}
         </S.contentList>
       </S.containerScroll>
