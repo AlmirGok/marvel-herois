@@ -5,6 +5,7 @@ import { Categories } from "../../components/categories";
 import {
   CardCharacters,
   CardComics,
+  CardCreators,
   CardEvents,
   CardSeries,
 } from "../../components/cards";
@@ -15,13 +16,20 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export function Home({ navigation }) {
   const [characters, setCharacters] = useState([]);
+  const [charactersTotal, setCharactersTotal] = useState([]);
   const [comics, setComics] = useState([]);
+  const [comicsTotal, setComicsTotal] = useState([]);
   const [events, setEvents] = useState([]);
+  const [eventsTotal, setEventsTotal] = useState([]);
   const [series, setSeries] = useState([]);
+  const [seriesTotal, setSeriesTotal] = useState([]);
+  const [creators, setCreators] = useState([]);
+  const [creatorsTotal, setCreatorsTotal] = useState([]);
   const [loadingCharacters, setLoadingCharacters] = useState(false);
   const [loadingComics, setLoadingComics] = useState(false);
   const [loadingEvents, setLoadingEvents] = useState(false);
   const [loadingSeries, setLoadingSeries] = useState(false);
+  const [loadingCreators, setLoadingCreators] = useState(false);
 
   const timeStamp = "1681411983";
   const apiKey = "c36ffe65080ff65bee37c51bb12b91cc";
@@ -37,6 +45,7 @@ export function Home({ navigation }) {
       .then((jsonParsed) => {
         setLoadingCharacters(true);
         setCharacters(jsonParsed.data.results);
+        setCharactersTotal(jsonParsed.data.total);
       })
       .catch((error) => {
         console.log(error);
@@ -62,6 +71,7 @@ export function Home({ navigation }) {
       .then((jsonParsed) => {
         setLoadingComics(true);
         setComics(jsonParsed.data.results);
+        setComicsTotal(jsonParsed.data.total);
       })
       .catch((error) => {
         console.log(error);
@@ -88,8 +98,8 @@ export function Home({ navigation }) {
       })
       .then((jsonParsed) => {
         setLoadingEvents(true);
-
         setEvents(jsonParsed.data.results);
+        setEventsTotal(jsonParsed.data.total);
       })
       .catch((error) => {
         console.log(error);
@@ -113,8 +123,9 @@ export function Home({ navigation }) {
         return response.json();
       })
       .then((jsonParsed) => {
-        setSeries(jsonParsed.data.results);
         setLoadingSeries(true);
+        setSeries(jsonParsed.data.results);
+        setSeriesTotal(jsonParsed.data.total);
       })
       .catch((error) => {
         console.log(error);
@@ -125,6 +136,33 @@ export function Home({ navigation }) {
     return (
       <CardSeries
         title={item.title}
+        image={`${item.thumbnail.path + "." + item.thumbnail.extension}`}
+        id={item.id}
+      />
+    );
+  };
+
+  useEffect(() => {
+    fetch(
+      `http://gateway.marvel.com/v1/public/creators?ts=${timeStamp}&apikey=${apiKey}&hash=${md5}&limit=20`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonParsed) => {
+        setLoadingCreators(true);
+        setCreators(jsonParsed.data.results);
+        setCreatorsTotal(jsonParsed.data.total);
+      })
+      .catch((error) => {
+        console.log(error);
+      }).finally;
+  }, []);
+
+  const renderItemCreators = ({ item }) => {
+    return (
+      <CardCreators
+        title={item.fullName}
         image={`${item.thumbnail.path + "." + item.thumbnail.extension}`}
         id={item.id}
       />
@@ -170,13 +208,21 @@ export function Home({ navigation }) {
           <S.textH5 className="text-center">
             Bem vindo ao Marvel Heroes
           </S.textH5>
-          <S.textH1 className="text-center">Escolha o seu personagem</S.textH1>
+          <S.textH1 className="text-center">
+            Informações do universo Marvel
+          </S.textH1>
         </S.contentText>
-        <Categories />
+        <Categories
+          valueCharacters={charactersTotal}
+          valueCreators={creatorsTotal}
+          valueComics={comicsTotal}
+          valueEvents={eventsTotal}
+          valueSeries={seriesTotal}
+        />
 
         <S.contentList>
           <S.contentTextCategory>
-            <S.textCategoryTitle>Heróis</S.textCategoryTitle>
+            <S.textCategoryTitle>Personagens</S.textCategoryTitle>
             <TouchableOpacity activeOpacity={0.9}>
               <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
             </TouchableOpacity>
@@ -258,6 +304,29 @@ export function Home({ navigation }) {
               horizontal
               data={series}
               renderItem={renderItemSeries}
+              keyExtractor={keyExtractor}
+              showsHorizontalScrollIndicator={false}
+            />
+          ) : (
+            <SkeletonLoading />
+          )}
+        </S.contentList>
+
+        <S.contentList>
+          <S.contentTextCategory>
+            <S.textCategoryTitle>Criadores</S.textCategoryTitle>
+            <TouchableOpacity activeOpacity={0.9}>
+              <S.textCategoryViewAll>Ver tudo</S.textCategoryViewAll>
+            </TouchableOpacity>
+          </S.contentTextCategory>
+          {loadingCreators ? (
+            <FlatList
+              style={{
+                height: 230,
+              }}
+              horizontal
+              data={creators}
+              renderItem={renderItemCreators}
               keyExtractor={keyExtractor}
               showsHorizontalScrollIndicator={false}
             />

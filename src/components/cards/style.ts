@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { colors, fontSizes } from "../../theme";
+import { colors } from "../../theme";
 
 export const Container = styled.View`
   width: 140px;
@@ -35,7 +35,6 @@ export const imageShadow = styled.Image`
   margin-top: 0px;
   z-index: 1;
 `;
-
 export const contentText = styled.View`
   width: 100%;
   flex-direction: column;

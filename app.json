@@ -4,7 +4,7 @@
     "slug": "marvel-hero",
     "version": "1.0.0",
     "splash": {
-      "image": "./src/assets/spiderMan.png",
+      "image": "./src/assets/splash.jpg",
       "resizeMode": "cover",
       "backgroundColor": "#000000"
     },

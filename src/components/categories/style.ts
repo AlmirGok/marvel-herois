@@ -1,21 +1,19 @@
 import styled from "styled-components/native";
 
-import { colors, fontSizes } from "../../theme";
+import { colors } from "../../theme";
 
 export const Container = styled.View`
-  width: 100%;
+  width: auto;
   flex-direction: row;
-  align-items: center;
-  display: flex;
-  height: 100px;
   padding-top: 35px;
-  justify-content: space-between;
   padding-right: 20px;
   padding-left: 20px;
+  height: auto;
+  flex-wrap: wrap;
+  display: gap;
 `;
-
 export const ButtonHero = styled.TouchableOpacity`
-  width: 56px;
+  width: auto;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -23,9 +21,12 @@ export const ButtonHero = styled.TouchableOpacity`
   height: 56px;
   border-radius: 56px;
   background-color: ${colors.hero};
+  padding: 0px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 `;
 export const ButtonVillain = styled.TouchableOpacity`
-  width: 56px;
+  width: auto;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -33,9 +34,12 @@ export const ButtonVillain = styled.TouchableOpacity`
   height: 56px;
   border-radius: 56px;
   background-color: ${colors.villain};
+  padding: 0px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 `;
 export const ButtonAntihero = styled.TouchableOpacity`
-  width: 56px;
+  width: auto;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -43,9 +47,12 @@ export const ButtonAntihero = styled.TouchableOpacity`
   height: 56px;
   border-radius: 56px;
   background-color: ${colors.antihero};
+  padding: 0px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 `;
 export const ButtonAlien = styled.TouchableOpacity`
-  width: 56px;
+  width: auto;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -53,9 +60,12 @@ export const ButtonAlien = styled.TouchableOpacity`
   height: 56px;
   border-radius: 56px;
   background-color: ${colors.alien};
+  padding: 0px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 `;
 export const ButtonHuman = styled.TouchableOpacity`
-  width: 56px;
+  width: auto;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -63,4 +73,22 @@ export const ButtonHuman = styled.TouchableOpacity`
   height: 56px;
   border-radius: 56px;
   background-color: ${colors.human};
+  padding: 0px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+`;
+export const ContentInfo = styled.View`
+  display: flex;
+`;
+export const TextName = styled.Text`
+  font-size: 13px;
+  color: ${colors.white};
+  padding: 0px 10px;
+  margin: 0px;
+`;
+export const TextValue = styled.Text`
+  font-size: 16px;
+  color: ${colors.white};
+  padding: 0px 10px;
+  font-weight: 800;
 `;

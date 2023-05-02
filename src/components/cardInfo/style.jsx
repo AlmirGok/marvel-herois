@@ -3,7 +3,6 @@ import { colors, fontSizes, fontWeights } from "../../theme";
 
 export const container = styled.View`
   flex: 1;
-  background-color: red;
   height: auto;
   overflow: hidden;
   margin-left: 10px;
@@ -14,12 +13,6 @@ export const container = styled.View`
   border-color: ${colors.antihero};
   background-color: ${colors.silver};
 `;
-
-// export const image = styled.Image`
-//   width: 140px;
-//   height: 230px;
-//   position: absolute;
-// `;
 
 export const TextNameComics = styled.Text`
   width: 100%;

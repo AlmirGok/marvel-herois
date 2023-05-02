@@ -1,11 +1,11 @@
-import * as S from "./style";
+import * as S from "../style";
 import { ActivityIndicator, FlatList } from "react-native";
-import { HeaderDetails } from "../../components/header";
-import { Films } from "../../components/films";
+import { HeaderDetails } from "../../../components/header";
+import { CardInfo } from "../../../components/cardInfo";
 
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import { colors } from "../../theme";
+import { colors } from "../../../theme";
 
 export function DetailsSeries() {
   const route = useRoute();
@@ -45,12 +45,8 @@ export function DetailsSeries() {
   }, []);
 
   const renderItem = ({ item }) => {
-    return <Films name={item.name} />;
+    return <CardInfo name={item.name} />;
   };
-  const renderItemPrices = ({ item }) => {
-    return <Films name={`$ ${item.price}`} />;
-  };
-  const keyExtractor = (item) => item.id;
 
   return (
     <S.container>
@@ -63,7 +59,7 @@ export function DetailsSeries() {
             }}
           />
           <S.imageShadowBackground
-            source={require("../../assets/shadowDetails.png")}
+            source={require("../../../assets/shadowDetails.png")}
           />
           <S.containerScroll>
             <S.contentTextTop>
@@ -89,7 +85,6 @@ export function DetailsSeries() {
                 key={creators}
                 data={creators}
                 renderItem={renderItem}
-                keyExtractor={keyExtractor}
               />
             </S.contentFilms>
             <S.contentFilms>
@@ -99,7 +94,6 @@ export function DetailsSeries() {
                 key={characters}
                 data={characters}
                 renderItem={renderItem}
-                keyExtractor={keyExtractor}
               />
             </S.contentFilms>
             <S.contentFilms>
@@ -109,7 +103,6 @@ export function DetailsSeries() {
                 key={comics}
                 data={comics}
                 renderItem={renderItem}
-                keyExtractor={keyExtractor}
               />
             </S.contentFilms>
             <S.contentFilms>
@@ -119,7 +112,6 @@ export function DetailsSeries() {
                 key={events}
                 data={events}
                 renderItem={renderItem}
-                keyExtractor={keyExtractor}
               />
             </S.contentFilms>
           </S.containerScroll>
