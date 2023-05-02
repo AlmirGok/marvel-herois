@@ -1,5 +1,6 @@
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import * as S from "./style";
+
+import { FlatList, TouchableOpacity } from "react-native";
 import { HeaderHome } from "../../components/header";
 import { Categories } from "../../components/categories";
 import {
@@ -10,7 +11,6 @@ import {
   CardSeries,
 } from "../../components/cards";
 import { Skeleton } from "@rneui/themed";
-
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -131,7 +131,6 @@ export function Home({ navigation }) {
         console.log(error);
       }).finally;
   }, []);
-
   const renderItemSeries = ({ item }) => {
     return (
       <CardSeries
@@ -158,7 +157,6 @@ export function Home({ navigation }) {
         console.log(error);
       }).finally;
   }, []);
-
   const renderItemCreators = ({ item }) => {
     return (
       <CardCreators
@@ -202,7 +200,6 @@ export function Home({ navigation }) {
   return (
     <S.container>
       <HeaderHome />
-
       <S.containerScroll>
         <S.contentText>
           <S.textH5 className="text-center">
