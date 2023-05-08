@@ -64,3 +64,19 @@ export const textCategoryViewAll = styled.Text`
   color: ${colors.grey};
   font-size: ${fontSizes.homeSubtitle};
 `;
+
+export const Loading = styled.View`
+  width: 100%;
+  height: 230px;
+  display: flex;
+  flex-direction: row;
+`;
+
+export const Skeleton = styled.View`
+  width: 140px;
+  height: 230px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 16px;
+  overflow: hidden;
+`;

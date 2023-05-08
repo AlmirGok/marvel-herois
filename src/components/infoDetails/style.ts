@@ -11,7 +11,6 @@ export const container = styled.View`
   padding-top: 35px;
   justify-content: space-between;
 `;
-
 export const buttonInfor = styled.TouchableOpacity`
   flex-direction: column;
   align-items: center;
@@ -19,7 +18,6 @@ export const buttonInfor = styled.TouchableOpacity`
   display: flex;
   border-radius: 56px;
 `;
-
 export const textInfor = styled.Text`
   font-size: ${fontSizes.detailsInfo};
   color: ${colors.white};

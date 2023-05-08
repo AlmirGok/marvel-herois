@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { colors, fontSizes, fontWeights } from "../../theme";
+import { colors } from "../../theme";
 
 export const headerHome = styled.View`
   width: 100%;
